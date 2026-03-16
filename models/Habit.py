@@ -12,13 +12,6 @@ class Habit:
         if not valid:
             raise ValueError(error)
 
-    def _validate_habit_name(self,name):
-        if not name:
-            return False,"Habit name cannot be empty."
-        
-        if len(name)<3:
-            return False,"Habit name must be at least 3 characters long."
-        return True,""
     
     def _validate_frequency(self,habit_frequency):
         valid_frequencies = ["daily", "weekly", "monthly"]

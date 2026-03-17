@@ -1,3 +1,6 @@
+from badge import badge
+from badge import badgescollection
+
 class userbadge:
     def __init__(self,userid,badgeid):
         self.userid=userid
@@ -5,8 +8,11 @@ class userbadge:
         userbadgescollection.setdefault(userid,[]).append(badgeid)
     
     @staticmethod
-    def add_userbadge(userid,badgeid):
-        return userbadge(userid,badgeid)
+    def award_badge_to_user(userid,badgeid):
+        if badgeid in badgescollection:
+            userbadge(userid,badgeid)
+        else:
+            raise ValueError("Badge not found")
     
     @staticmethod
     def list_userbadges_by_userid(userid):

@@ -1,5 +1,8 @@
 from math import ceil
 from datetime import date
+from badge import badgescollection
+from goal import goalscollection
+from userbadge import userbadge
 class goal:
     def __init__(self,name,userid,goalid,habitid,description,frequency):
         self.userid=userid
@@ -46,6 +49,8 @@ class goal:
         if not done_date:
             done_date=date.today()
         self.completed_dates.add(done_date)
+        self.evaluate_and_award_badge()
+
 
     def unmark_done(self,done_date=None):
         if not done_date:
@@ -79,8 +84,31 @@ class goal:
             "completed":completed,
             "expected":expected,
             "progress_percentage":progress
-
         }
+
+        
+    
+    def evaluate_and_award_badge(self):
+        awareded_badges=[]
+        existing_badges=userbadge.list_userbadges_by_userid(self.userid)
+        progress_data=self.get_progress()
+        progress_percentage=progress_data["progress_percentage"]
+        completed=progress_data["completed"]
+
+        for badgeid,current_badge in badgescollection.items():
+            if badgeid in existing_badges:
+                continue
+            if current_badge.criteria_type=="progress_percentage":
+                if progress_percentage >= current_badge.criteria_value:
+                    userbadge.award_badge_to_user(self.userid,badgeid)
+                    awareded_badges.append(badgeid)
+            elif current_badge.criteria_type=="completed_count":
+                if completed >= current_badge.criteria_value:
+                    userbadge.award_badge_to_user(self.userid,badgeid)
+                    awareded_badges.append(badgeid)
+            
+        return awareded_badges
+        
         
     
 def create_goal(name,userid,goalid,habitid,description,frequency):

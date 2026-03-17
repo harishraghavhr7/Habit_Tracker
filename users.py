@@ -6,8 +6,19 @@ class users:
         self.userid=userid
         self.username=username
         self.email=email
+        self.is_admin=False
         self.password=password
         userscollection[userid]=self
+
+    @staticmethod
+    def set_admin(userid):
+        user=userscollection.get(userid)
+        if user:
+            user.is_admin=True
+        else:
+            raise ValueError("User not found")
+    def is_admin(self):
+        return self.is_admin
     
     @staticmethod
     def create_user(userid,username,email,password):

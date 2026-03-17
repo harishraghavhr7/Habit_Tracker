@@ -4,9 +4,14 @@ class communitypost:
         self.userid=userid
         self.content=content
         self.communityid=communityid
+        communitypostscollection.setdefault(communityid,[]).append(self)
         
+    @staticmethod
     def create_communitypost(postid,communityid,userid,content):
-        communitypostscollection[communityid].append(communitypost(postid,communityid,userid,content))
         return communitypost(postid,communityid,userid,content)
+    
+    @staticmethod
+    def list_communityposts_by_communityid(communityid):
+        return communitypostscollection.get(communityid,[])
     
 communitypostscollection=dict()

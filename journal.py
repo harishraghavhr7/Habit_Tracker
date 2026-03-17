@@ -7,8 +7,12 @@ class journal:
         self.date=date
         self.entry=entry
 
+    @staticmethod
+    def list_journals_by_userid(userid):
+        return [journal for journal in journalscollection.values() if journal.userid == userid]
+
 def create_journal(entryid,userid,habitid,goalid,date,entry):
     journalscollection[entryid]=journal(entryid,userid,habitid,goalid,date,entry)
-    return journal(entryid,userid,habitid,goalid,date,entry)
+    return journalscollection[entryid]
 
 journalscollection=dict()
